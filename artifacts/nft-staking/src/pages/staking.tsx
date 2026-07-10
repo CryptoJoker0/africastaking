@@ -24,19 +24,24 @@ export default function StakingPage() {
   const [activeTab, setActiveTab] = useState<'owned' | 'staked'>('owned');
 
   return (
-    <div className="space-y-20 animate-in fade-in duration-700">
-      {/* ── Vault section (wallet-gated) ── */}
+    <div className="animate-in fade-in duration-700">
+
+      {/* ── DESCRIPTION: editorial manifesto at the top ── */}
+      <ManifestoSection />
+
+      {/* ── Vault section (wallet-gated) below the description ── */}
       {!walletAddress ? (
         <UnconnectedState onConnect={connectWallet} />
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-8 mt-20">
           <div className="flex flex-col md:flex-row gap-6 items-start md:items-end justify-between">
             <div>
-              <h1 className="font-heading text-4xl md:text-5xl font-semibold italic mb-2 text-glow-gold">
-                Staking Vault
-              </h1>
+              <p className="text-[10px] text-primary tracking-[0.3em] uppercase font-medium mb-2">Your Vault</p>
+              <h2 className="font-heading text-4xl md:text-5xl font-semibold italic mb-2">
+                Staking Dashboard
+              </h2>
               <p className="text-muted-foreground max-w-xl text-sm">
-                Lock your Genesis NFTs to earn XNT, X1Brains, and AF rewards. The longer you stake, the more power you wield in the ecosystem.
+                Your active Genesis NFTs and live reward balances.
               </p>
             </div>
             <RewardRatesWidget />
@@ -84,9 +89,6 @@ export default function StakingPage() {
           </div>
         </div>
       )}
-
-      {/* ── Manifesto ── always visible ── */}
-      <ManifestoSection />
     </div>
   );
 }

@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "AFRICA X1 NFT Staking"
+version = "1.0.0"
+id = "artifacts/nft-staking"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19824
+
+[services.development]
+run = "pnpm --filter @workspace/nft-staking run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/nft-staking", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/nft-staking/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19824"
+BASE_PATH = "/"

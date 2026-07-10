@@ -1,0 +1,113 @@
+Build a new standalone NFT Staking module for the AFRICA X1 project.
+
+Important: Do NOT modify or break the existing NFT minting system. The mint page is already live and working correctly. Treat it as production code.
+
+The staking system must be built as a separate feature that integrates with the current website.
+
+Goal
+
+Create a new Staking page that connects to the existing AFRICA X1 NFT collection without changing the mint, collection, market, or My NFTs pages.
+
+Requirements
+
+- Create a new navigation item called Staking.
+- The staking page must automatically detect all AFRICA X1 NFTs owned by the connected wallet.
+- Display only NFTs from the AFRICA X1 Genesis collection.
+- Every NFT card must have a Stake button.
+- When an NFT is staked:
+  - Verify wallet ownership.
+  - Lock the NFT for staking.
+  - Begin calculating rewards.
+- Allow users to:
+  - View staked NFTs.
+  - Claim rewards.
+  - Unstake NFTs.
+
+Rewards
+
+The staking system must support three reward tokens:
+
+- XNT
+- X1Brains
+- AFRICA Token (AF)
+
+Reward rates must be configurable from the backend and must not be hardcoded.
+
+Rewards should be based on NFT rarity.
+
+User Dashboard
+
+Show:
+
+- Wallet Address
+- NFTs Owned
+- NFTs Staked
+- Pending XNT Rewards
+- Pending X1Brains Rewards
+- Pending AF Rewards
+- Lifetime Rewards
+- Total Value Earned
+
+NFT Card
+
+Each NFT card should display:
+
+- NFT artwork
+- NFT name
+- Token ID
+- Rarity
+- Current status
+- Daily reward
+- Total earned
+- Stake button
+- Claim Rewards button
+- Unstake button
+
+Security
+
+Implement production-ready security:
+
+- Verify wallet ownership.
+- Prevent double staking.
+- Prevent duplicate reward claims.
+- Verify every transaction with wallet signatures.
+- Record all stake, claim, and unstake events.
+- Handle transaction failures safely.
+
+Admin
+
+Do not add the admin dashboard to the website navigation.
+
+The admin dashboard must only be accessible through:
+
+"/admin"
+
+Admin features:
+
+- Enable/disable staking.
+- Pause staking.
+- Pause reward claiming.
+- Configure reward rates.
+- Configure supported reward tokens.
+- View staking statistics.
+- View treasury balances.
+- View all staked NFTs.
+- View reward distribution history.
+
+UI
+
+Keep the existing AFRICA X1 branding.
+
+Use the same premium black, gold, and blue theme already used on the website.
+
+Add a premium pink button in the header:
+
+BUY AF ON BARBIE
+
+The staking page should feel like a natural extension of the current website.
+
+Most Important Rule
+
+Do NOT modify the existing minting logic, NFT collection, marketplace, wallet connection, or My NFTs functionality.
+
+Build staking as a completely separate module that integrates with the existing AFRICA X1 NFT ecosystem. The current website is already live, and staking must be added without affecting any existing functionality.

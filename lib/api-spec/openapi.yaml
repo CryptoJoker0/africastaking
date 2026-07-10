@@ -3,20 +3,23 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: AFRICA X1 NFT Staking API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: staking
+    description: NFT staking operations
+  - name: admin
+    description: Admin operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +27,268 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /staking/dashboard/{walletAddress}:
+    get:
+      operationId: getWalletDashboard
+      tags: [staking]
+      summary: Get wallet staking dashboard
+      parameters:
+        - name: walletAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Wallet dashboard
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WalletDashboard"
+        "404":
+          description: Not found
+
+  /staking/nfts/{walletAddress}:
+    get:
+      operationId: getWalletNfts
+      tags: [staking]
+      summary: Get all AFRICA X1 NFTs owned by wallet
+      parameters:
+        - name: walletAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of NFTs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NFTItem"
+
+  /staking/staked/{walletAddress}:
+    get:
+      operationId: getStakedNfts
+      tags: [staking]
+      summary: Get all staked NFTs for wallet
+      parameters:
+        - name: walletAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of staked NFTs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StakedNFTDetail"
+
+  /staking/reward-rates:
+    get:
+      operationId: getRewardRates
+      tags: [staking]
+      summary: Get current reward rates per rarity tier
+      responses:
+        "200":
+          description: Reward rates
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardRates"
+
+  /staking/stake:
+    post:
+      operationId: stakeNft
+      tags: [staking]
+      summary: Stake an NFT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StakeInput"
+      responses:
+        "200":
+          description: Stake successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StakingEvent"
+        "400":
+          description: Bad request (already staked, invalid signature, etc.)
+        "409":
+          description: NFT already staked
+
+  /staking/unstake:
+    post:
+      operationId: unstakeNft
+      tags: [staking]
+      summary: Unstake an NFT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnstakeInput"
+      responses:
+        "200":
+          description: Unstake successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StakingEvent"
+        "400":
+          description: Bad request
+
+  /staking/claim:
+    post:
+      operationId: claimRewards
+      tags: [staking]
+      summary: Claim pending rewards for an NFT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClaimInput"
+      responses:
+        "200":
+          description: Claim successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClaimResult"
+        "400":
+          description: Bad request (no rewards, staking paused, etc.)
+
+  /staking/rewards/{walletAddress}:
+    get:
+      operationId: getWalletRewards
+      tags: [staking]
+      summary: Get pending rewards summary for wallet
+      parameters:
+        - name: walletAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Reward summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RewardSummary"
+
+  /admin/stats:
+    get:
+      operationId: getAdminStats
+      tags: [admin]
+      summary: Get overall staking statistics
+      responses:
+        "200":
+          description: Staking stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StakingStats"
+
+  /admin/config:
+    get:
+      operationId: getAdminConfig
+      tags: [admin]
+      summary: Get staking configuration
+      responses:
+        "200":
+          description: Config
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StakingConfig"
+    patch:
+      operationId: updateAdminConfig
+      tags: [admin]
+      summary: Update staking configuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StakingConfigUpdate"
+      responses:
+        "200":
+          description: Updated config
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StakingConfig"
+
+  /admin/staked-nfts:
+    get:
+      operationId: getAllStakedNfts
+      tags: [admin]
+      summary: Get all staked NFTs across all wallets
+      responses:
+        "200":
+          description: All staked NFTs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StakedNFTDetail"
+
+  /admin/treasury:
+    get:
+      operationId: getTreasuryBalances
+      tags: [admin]
+      summary: Get treasury token balances
+      responses:
+        "200":
+          description: Treasury balances
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TreasuryBalance"
+
+  /admin/reward-history:
+    get:
+      operationId: getRewardHistory
+      tags: [admin]
+      summary: Get reward distribution history
+      responses:
+        "200":
+          description: Reward history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RewardHistoryItem"
+
+  /admin/events:
+    get:
+      operationId: getAllEvents
+      tags: [admin]
+      summary: Get all staking events (stake/unstake/claim)
+      responses:
+        "200":
+          description: Events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StakingEvent"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +299,412 @@ components:
       required:
         - status
 
+    WalletDashboard:
+      type: object
+      required:
+        - walletAddress
+        - nftsOwned
+        - nftsStaked
+        - pendingXnt
+        - pendingX1Brains
+        - pendingAf
+        - lifetimeXnt
+        - lifetimeX1Brains
+        - lifetimeAf
+        - totalValueEarned
+      properties:
+        walletAddress:
+          type: string
+        nftsOwned:
+          type: integer
+        nftsStaked:
+          type: integer
+        pendingXnt:
+          type: string
+          description: Pending XNT rewards (as string to preserve precision)
+        pendingX1Brains:
+          type: string
+        pendingAf:
+          type: string
+        lifetimeXnt:
+          type: string
+        lifetimeX1Brains:
+          type: string
+        lifetimeAf:
+          type: string
+        totalValueEarned:
+          type: string
+
+    NFTItem:
+      type: object
+      required:
+        - tokenId
+        - name
+        - imageUrl
+        - rarity
+        - isStaked
+        - status
+      properties:
+        tokenId:
+          type: string
+        name:
+          type: string
+        imageUrl:
+          type: string
+        rarity:
+          type: string
+          enum: [Common, Uncommon, Rare, Epic, Legendary]
+        isStaked:
+          type: boolean
+        status:
+          type: string
+          enum: [Unstaked, Staked, Locked]
+        dailyRewardXnt:
+          type: string
+        dailyRewardX1Brains:
+          type: string
+        dailyRewardAf:
+          type: string
+        totalEarnedXnt:
+          type: string
+        totalEarnedX1Brains:
+          type: string
+        totalEarnedAf:
+          type: string
+        stakedAt:
+          type: ["string", "null"]
+          format: date-time
+        pendingXnt:
+          type: ["string", "null"]
+        pendingX1Brains:
+          type: ["string", "null"]
+        pendingAf:
+          type: ["string", "null"]
+
+    StakedNFTDetail:
+      type: object
+      required:
+        - id
+        - tokenId
+        - walletAddress
+        - name
+        - imageUrl
+        - rarity
+        - stakedAt
+        - pendingXnt
+        - pendingX1Brains
+        - pendingAf
+        - totalEarnedXnt
+        - totalEarnedX1Brains
+        - totalEarnedAf
+        - dailyRewardXnt
+        - dailyRewardX1Brains
+        - dailyRewardAf
+      properties:
+        id:
+          type: integer
+        tokenId:
+          type: string
+        walletAddress:
+          type: string
+        name:
+          type: string
+        imageUrl:
+          type: string
+        rarity:
+          type: string
+          enum: [Common, Uncommon, Rare, Epic, Legendary]
+        stakedAt:
+          type: string
+          format: date-time
+        pendingXnt:
+          type: string
+        pendingX1Brains:
+          type: string
+        pendingAf:
+          type: string
+        totalEarnedXnt:
+          type: string
+        totalEarnedX1Brains:
+          type: string
+        totalEarnedAf:
+          type: string
+        dailyRewardXnt:
+          type: string
+        dailyRewardX1Brains:
+          type: string
+        dailyRewardAf:
+          type: string
+
+    RewardRates:
+      type: object
+      required:
+        - rates
+        - lastUpdated
+      properties:
+        rates:
+          type: array
+          items:
+            $ref: "#/components/schemas/RarityRewardRate"
+        lastUpdated:
+          type: string
+          format: date-time
+
+    RarityRewardRate:
+      type: object
+      required:
+        - rarity
+        - xntPerDay
+        - x1BrainsPerDay
+        - afPerDay
+      properties:
+        rarity:
+          type: string
+          enum: [Common, Uncommon, Rare, Epic, Legendary]
+        xntPerDay:
+          type: string
+        x1BrainsPerDay:
+          type: string
+        afPerDay:
+          type: string
+
+    StakeInput:
+      type: object
+      required:
+        - walletAddress
+        - tokenId
+        - signature
+        - message
+      properties:
+        walletAddress:
+          type: string
+        tokenId:
+          type: string
+        signature:
+          type: string
+          description: Wallet signature proving ownership
+        message:
+          type: string
+          description: Message that was signed
+
+    UnstakeInput:
+      type: object
+      required:
+        - walletAddress
+        - tokenId
+        - signature
+        - message
+      properties:
+        walletAddress:
+          type: string
+        tokenId:
+          type: string
+        signature:
+          type: string
+        message:
+          type: string
+
+    ClaimInput:
+      type: object
+      required:
+        - walletAddress
+        - tokenId
+        - signature
+        - message
+      properties:
+        walletAddress:
+          type: string
+        tokenId:
+          type: string
+        signature:
+          type: string
+        message:
+          type: string
+
+    ClaimResult:
+      type: object
+      required:
+        - success
+        - claimedXnt
+        - claimedX1Brains
+        - claimedAf
+        - txHash
+      properties:
+        success:
+          type: boolean
+        claimedXnt:
+          type: string
+        claimedX1Brains:
+          type: string
+        claimedAf:
+          type: string
+        txHash:
+          type: string
+
+    RewardSummary:
+      type: object
+      required:
+        - walletAddress
+        - totalPendingXnt
+        - totalPendingX1Brains
+        - totalPendingAf
+        - stakedNftCount
+      properties:
+        walletAddress:
+          type: string
+        totalPendingXnt:
+          type: string
+        totalPendingX1Brains:
+          type: string
+        totalPendingAf:
+          type: string
+        stakedNftCount:
+          type: integer
+
+    StakingEvent:
+      type: object
+      required:
+        - id
+        - eventType
+        - walletAddress
+        - tokenId
+        - txHash
+        - createdAt
+      properties:
+        id:
+          type: integer
+        eventType:
+          type: string
+          enum: [stake, unstake, claim]
+        walletAddress:
+          type: string
+        tokenId:
+          type: string
+        txHash:
+          type: string
+        xntAmount:
+          type: ["string", "null"]
+        x1BrainsAmount:
+          type: ["string", "null"]
+        afAmount:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    StakingConfig:
+      type: object
+      required:
+        - stakingEnabled
+        - stakingPaused
+        - claimingPaused
+        - collectionAddress
+        - supportedTokens
+        - updatedAt
+      properties:
+        stakingEnabled:
+          type: boolean
+        stakingPaused:
+          type: boolean
+        claimingPaused:
+          type: boolean
+        collectionAddress:
+          type: string
+        supportedTokens:
+          type: array
+          items:
+            type: string
+        updatedAt:
+          type: string
+          format: date-time
+
+    StakingConfigUpdate:
+      type: object
+      properties:
+        stakingEnabled:
+          type: boolean
+        stakingPaused:
+          type: boolean
+        claimingPaused:
+          type: boolean
+        collectionAddress:
+          type: string
+        supportedTokens:
+          type: array
+          items:
+            type: string
+        rewardRates:
+          type: array
+          items:
+            $ref: "#/components/schemas/RarityRewardRate"
+
+    StakingStats:
+      type: object
+      required:
+        - totalStaked
+        - totalWallets
+        - totalXntDistributed
+        - totalX1BrainsDistributed
+        - totalAfDistributed
+        - stakingEnabled
+        - claimingPaused
+      properties:
+        totalStaked:
+          type: integer
+        totalWallets:
+          type: integer
+        totalXntDistributed:
+          type: string
+        totalX1BrainsDistributed:
+          type: string
+        totalAfDistributed:
+          type: string
+        stakingEnabled:
+          type: boolean
+        claimingPaused:
+          type: boolean
+
+    TreasuryBalance:
+      type: object
+      required:
+        - xntBalance
+        - x1BrainsBalance
+        - afBalance
+        - lastUpdated
+      properties:
+        xntBalance:
+          type: string
+        x1BrainsBalance:
+          type: string
+        afBalance:
+          type: string
+        lastUpdated:
+          type: string
+          format: date-time
+
+    RewardHistoryItem:
+      type: object
+      required:
+        - id
+        - walletAddress
+        - tokenId
+        - xntAmount
+        - x1BrainsAmount
+        - afAmount
+        - claimedAt
+      properties:
+        id:
+          type: integer
+        walletAddress:
+          type: string
+        tokenId:
+          type: string
+        xntAmount:
+          type: string
+        x1BrainsAmount:
+          type: string
+        afAmount:
+          type: string
+        claimedAt:
+          type: string
+          format: date-time

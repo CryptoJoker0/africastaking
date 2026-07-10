@@ -23,71 +23,70 @@ export default function StakingPage() {
   const { walletAddress, connectWallet } = useWallet();
   const [activeTab, setActiveTab] = useState<'owned' | 'staked'>('owned');
 
-  if (!walletAddress) {
-    return <UnconnectedState onConnect={connectWallet} />;
-  }
-
   return (
-    <div className="space-y-8 animate-in fade-in duration-700">
-      <div className="flex flex-col md:flex-row gap-6 items-start md:items-end justify-between">
-        <div>
-          <h1 className="font-heading text-4xl md:text-5xl font-bold uppercase tracking-wider text-glow-gold mb-2">
-            Staking Vault
-          </h1>
-          <p className="text-muted-foreground max-w-xl">
-            Lock your Genesis NFTs to earn XNT, X1Brains, and AF rewards. The longer you stake, the more power you wield in the ecosystem.
-          </p>
-        </div>
-        
-        <RewardRatesWidget />
-      </div>
+    <div className="space-y-20 animate-in fade-in duration-700">
+      {/* ── Vault section (wallet-gated) ── */}
+      {!walletAddress ? (
+        <UnconnectedState onConnect={connectWallet} />
+      ) : (
+        <div className="space-y-8">
+          <div className="flex flex-col md:flex-row gap-6 items-start md:items-end justify-between">
+            <div>
+              <h1 className="font-heading text-4xl md:text-5xl font-semibold italic mb-2 text-glow-gold">
+                Staking Vault
+              </h1>
+              <p className="text-muted-foreground max-w-xl text-sm">
+                Lock your Genesis NFTs to earn XNT, X1Brains, and AF rewards. The longer you stake, the more power you wield in the ecosystem.
+              </p>
+            </div>
+            <RewardRatesWidget />
+          </div>
 
-      <DashboardStats address={walletAddress} />
+          <DashboardStats address={walletAddress} />
 
-      <div className="space-y-6">
-        <div className="flex border-b border-border/50 w-full">
-          <button
-            onClick={() => setActiveTab('owned')}
-            className={`px-8 py-4 font-heading text-lg font-bold tracking-widest uppercase transition-all border-b-2 relative ${
-              activeTab === 'owned' 
-                ? 'text-primary border-primary' 
-                : 'text-muted-foreground border-transparent hover:text-foreground'
-            }`}
-          >
-            My Wallet
-            {activeTab === 'owned' && (
-              <motion.div 
-                layoutId="activeTab" 
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary glow-gold" 
-              />
-            )}
-          </button>
-          <button
-            onClick={() => setActiveTab('staked')}
-            className={`px-8 py-4 font-heading text-lg font-bold tracking-widest uppercase transition-all border-b-2 relative ${
-              activeTab === 'staked' 
-                ? 'text-primary border-primary' 
-                : 'text-muted-foreground border-transparent hover:text-foreground'
-            }`}
-          >
-            Staked Vault
-            {activeTab === 'staked' && (
-              <motion.div 
-                layoutId="activeTab" 
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary glow-gold" 
-              />
-            )}
-          </button>
-        </div>
+          <div className="space-y-6">
+            <div className="flex border-b border-border/50 w-full">
+              <button
+                onClick={() => setActiveTab('owned')}
+                className={`px-8 py-4 text-sm font-medium tracking-widest uppercase transition-all border-b-2 relative ${
+                  activeTab === 'owned'
+                    ? 'text-primary border-primary'
+                    : 'text-muted-foreground border-transparent hover:text-foreground'
+                }`}
+              >
+                My Wallet
+                {activeTab === 'owned' && (
+                  <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary glow-gold" />
+                )}
+              </button>
+              <button
+                onClick={() => setActiveTab('staked')}
+                className={`px-8 py-4 text-sm font-medium tracking-widest uppercase transition-all border-b-2 relative ${
+                  activeTab === 'staked'
+                    ? 'text-primary border-primary'
+                    : 'text-muted-foreground border-transparent hover:text-foreground'
+                }`}
+              >
+                Staked Vault
+                {activeTab === 'staked' && (
+                  <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary glow-gold" />
+                )}
+              </button>
+            </div>
 
-        <div className="min-h-[400px]">
-          {activeTab === 'owned' ? (
-            <OwnedNfts address={walletAddress} />
-          ) : (
-            <StakedNfts address={walletAddress} />
-          )}
+            <div className="min-h-[400px]">
+              {activeTab === 'owned' ? (
+                <OwnedNfts address={walletAddress} />
+              ) : (
+                <StakedNfts address={walletAddress} />
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* ── Manifesto ── always visible ── */}
+      <ManifestoSection />
     </div>
   );
 }
@@ -516,6 +515,124 @@ function StakedNftCard({ nft, walletAddress }: { nft: StakedNFTDetail, walletAdd
         </div>
       </div>
     </motion.div>
+  );
+}
+
+function ManifestoSection() {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      className="relative max-w-4xl mx-auto"
+    >
+      {/* Top rule with label */}
+      <div className="flex items-center gap-4 mb-14">
+        <div className="h-px flex-1 bg-primary/20" />
+        <span className="text-[10px] text-muted-foreground tracking-[0.3em] uppercase font-medium shrink-0">
+          The Staking Manifesto
+        </span>
+        <div className="h-px flex-1 bg-primary/20" />
+      </div>
+
+      {/* Headline */}
+      <div className="mb-12 text-center">
+        <p className="text-[10px] text-primary tracking-[0.35em] uppercase font-medium mb-4">
+          Africa Staking
+        </p>
+        <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl italic leading-[1.1] text-foreground mb-5">
+          Hold the Legacy.
+          <br />
+          <span className="text-primary">Earn the Future.</span>
+        </h2>
+      </div>
+
+      {/* Body — two-column editorial layout on md+ */}
+      <div className="grid md:grid-cols-[1fr_2px_1fr] gap-10 md:gap-14 text-[15px] leading-relaxed text-muted-foreground">
+        {/* Left column */}
+        <div className="space-y-6">
+          <p>
+            AFRICA Staking is more than a reward system — it is a commitment to a vision.
+            Every Genesis NFT represents a piece of Africa's digital future, and staking
+            allows you to become an active participant in that journey.
+          </p>
+          <p>
+            When you stake your AFRICA X1 Genesis NFT, you are not simply locking a digital
+            collectible. You are strengthening the ecosystem, supporting its long-term growth,
+            and becoming part of a community that believes African innovation belongs on the
+            global blockchain stage.
+          </p>
+          <p>
+            Your rewards are determined by the rarity of your NFT. The rarer your Genesis NFT,
+            the greater your earning potential. Every day your NFT remains staked, it works for
+            you — generating rewards while continuing to represent your place among the earliest
+            supporters of the AFRICA X1 ecosystem.
+          </p>
+        </div>
+
+        {/* Vertical divider */}
+        <div className="hidden md:block w-px bg-primary/10 self-stretch mx-auto" />
+
+        {/* Right column */}
+        <div className="space-y-6">
+          <p>
+            Stakers will earn rewards in XNT, X1Brains, and the upcoming AFRICA (AF) token,
+            creating a multi-token reward economy designed for long-term participation rather
+            than short-term speculation.
+          </p>
+          <p>
+            With only <span className="text-foreground font-semibold">50 Genesis NFTs</span> ever
+            created, staking is an exclusive privilege reserved for the earliest believers.
+            Every staked NFT strengthens scarcity, reinforces value, and contributes to the
+            future of the AFRICA ecosystem.
+          </p>
+
+          {/* Closing creed */}
+          <div className="pt-6 border-t border-primary/15 space-y-1">
+            <p className="text-foreground/90 font-medium">This is not just staking.</p>
+            <p className="font-heading text-2xl italic text-primary leading-snug">
+              This is ownership.<br />
+              This is participation.<br />
+              This is belief.<br />
+              This is legacy.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Call to action at the bottom */}
+      <div className="mt-14 text-center space-y-6">
+        <p className="text-sm text-muted-foreground tracking-wide">
+          Stake your Genesis NFT. Earn with purpose. Build the future of Africa on X1.
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="https://african-x-1-nft-1--africanft.replit.app/mint"
+            target="_blank"
+            rel="noreferrer"
+            className="mint-grow-btn relative inline-flex items-center gap-2.5 px-8 py-3.5 bg-primary text-primary-foreground font-bold text-xs tracking-widest uppercase overflow-hidden"
+          >
+            <span className="mint-ring" />
+            <span className="mint-ring mint-ring-delay" />
+            <ExternalLink className="w-3.5 h-3.5 relative z-10" />
+            <span className="relative z-10">Mint Your Genesis NFT</span>
+          </a>
+          <a
+            href="https://african-x-1-nft-1--africanft.replit.app"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors tracking-widest uppercase"
+          >
+            <ExternalLink className="w-3 h-3" />
+            Visit the main site
+          </a>
+        </div>
+      </div>
+
+      {/* Bottom rule */}
+      <div className="mt-16 h-px bg-primary/10" />
+    </motion.section>
   );
 }
 

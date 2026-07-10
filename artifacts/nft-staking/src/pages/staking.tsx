@@ -15,7 +15,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { formatToken, generateMockSignature, generateMockMessage } from '@/lib/utils';
 import type { NFTItem, StakedNFTDetail } from '@workspace/api-client-react';
-import { Shield, Clock, TrendingUp, Coins, LockKeyhole, Pickaxe, Award, AlertCircle } from 'lucide-react';
+import { Shield, Clock, TrendingUp, Coins, LockKeyhole, Pickaxe, Award, AlertCircle, ExternalLink, Wallet } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -99,18 +99,48 @@ function UnconnectedState({ onConnect }: { onConnect: () => void }) {
         <div className="absolute inset-0 rounded-full glow-gold opacity-50" />
         <Shield className="w-12 h-12 text-primary" />
       </div>
-      <h1 className="font-heading text-5xl font-bold uppercase tracking-widest mb-4 text-glow-gold">
+      <h1 className="font-heading text-5xl font-semibold mb-4 text-glow-gold italic">
         Africa X1 Vault
       </h1>
-      <p className="text-lg text-muted-foreground mb-8">
+      <p className="text-base text-muted-foreground mb-10 max-w-md leading-relaxed">
         Connect your wallet to access the staking vault. Lock your premium African heritage NFTs to earn daily rewards in XNT, X1Brains, and AF.
       </p>
-      <button 
-        onClick={onConnect}
-        className="px-8 py-4 bg-primary text-primary-foreground font-bold rounded-lg hover:brightness-110 hover:shadow-[0_0_20px_rgba(201,168,76,0.6)] transition-all uppercase tracking-widest text-lg"
+
+      {/* Primary actions */}
+      <div className="flex flex-col sm:flex-row items-center gap-4 mb-10">
+        {/* Mint button — growing pulse */}
+        <a
+          href="https://african-x-1-nft-1--africanft.replit.app/mint"
+          target="_blank"
+          rel="noreferrer"
+          className="mint-grow-btn relative inline-flex items-center gap-2.5 px-8 py-4 bg-primary text-primary-foreground font-bold text-sm tracking-widest uppercase overflow-hidden"
+        >
+          {/* Ripple ring */}
+          <span className="mint-ring" />
+          <span className="mint-ring mint-ring-delay" />
+          <ExternalLink className="w-4 h-4 relative z-10" />
+          <span className="relative z-10">Mint Your NFT</span>
+        </a>
+
+        <button
+          onClick={onConnect}
+          className="inline-flex items-center gap-2 px-8 py-4 border border-white/15 text-foreground text-sm font-medium tracking-widest uppercase hover:border-primary/40 hover:bg-white/3 transition-all"
+        >
+          <Wallet className="w-4 h-4 text-primary" />
+          Connect Wallet
+        </button>
+      </div>
+
+      {/* Website link */}
+      <a
+        href="https://african-x-1-nft-1--africanft.replit.app"
+        target="_blank"
+        rel="noreferrer"
+        className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors tracking-widest uppercase"
       >
-        Connect Wallet to Enter
-      </button>
+        <ExternalLink className="w-3 h-3" />
+        Visit african-x-1-nft-1--africanft.replit.app
+      </a>
     </div>
   );
 }

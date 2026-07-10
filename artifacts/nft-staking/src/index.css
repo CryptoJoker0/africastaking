@@ -217,4 +217,37 @@
   .tick-animation {
     animation: tickUp 0.2s ease-out;
   }
+
+  /* ── Mint button: continuous grow-pulse ── */
+  @keyframes mint-grow {
+    0%, 100% { transform: scale(1);    box-shadow: 0 0 0   0   rgba(253,199,0,0.5), 0 4px 20px rgba(253,199,0,0.25); }
+    50%       { transform: scale(1.06); box-shadow: 0 0 28px 6px rgba(253,199,0,0.45), 0 4px 32px rgba(253,199,0,0.35); }
+  }
+  @keyframes mint-ring-expand {
+    0%   { transform: scale(1);   opacity: 0.7; }
+    100% { transform: scale(2.2); opacity: 0;   }
+  }
+
+  .mint-grow-btn {
+    animation: mint-grow 2.4s ease-in-out infinite;
+    box-shadow: 0 0 0 0 rgba(253,199,0,0.5);
+    cursor: pointer;
+  }
+  .mint-grow-btn:hover {
+    animation-play-state: paused;
+    transform: scale(1.08);
+    box-shadow: 0 0 36px 8px rgba(253,199,0,0.55);
+  }
+
+  /* Ripple rings that radiate outward */
+  .mint-ring {
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(253, 199, 0, 0.6);
+    animation: mint-ring-expand 2.4s ease-out infinite;
+    pointer-events: none;
+  }
+  .mint-ring-delay {
+    animation-delay: 1.2s;
+  }
 }

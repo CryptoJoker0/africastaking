@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
@@ -45,110 +45,176 @@
   --font-serif: var(--app-font-serif);
   --font-mono: var(--app-font-mono);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* AFRICA X1 — exact palette from https://african-x-1-nft-1--africanft.replit.app */
 :root {
-  /* Using the same dark theme for both to force dark mode look */
-  --background: 240 20% 5%;
-  --foreground: 240 20% 96%;
-  --card: 240 20% 7%;
-  --card-foreground: 240 20% 96%;
-  --card-border: 44 55% 54% / 0.15;
-  --popover: 240 20% 7%;
-  --popover-foreground: 240 20% 96%;
-  --popover-border: 44 55% 54% / 0.15;
-  --primary: 44 55% 54%;
-  --primary-foreground: 240 20% 5%;
+  /* #010207 = hsl(222, 75%, 2%) */
+  --background: 222 75% 2%;
+  --foreground: 0 0% 97%;
+
+  /* Cards: slightly lighter than bg */
+  --card: 222 40% 5%;
+  --card-foreground: 0 0% 97%;
+  /* #FDC700 gold border with low opacity */
+  --card-border: 47 100% 50% / 0.12;
+
+  --popover: 222 40% 6%;
+  --popover-foreground: 0 0% 97%;
+  --popover-border: 47 100% 50% / 0.15;
+
+  /* #FDC700 = hsl(47, 100%, 50%) */
+  --primary: 47 100% 50%;
+  --primary-foreground: 222 75% 2%;
+
+  /* X1Brains accent — keeping a cobalt blue */
   --secondary: 218 100% 55%;
   --secondary-foreground: 0 0% 100%;
-  --muted: 240 20% 12%;
-  --muted-foreground: 240 20% 65%;
-  --accent: 44 55% 54% / 0.1;
-  --accent-foreground: 44 55% 54%;
+
+  /* #8E9AA4 ≈ hsl(210, 15%, 61%) */
+  --muted: 222 30% 9%;
+  --muted-foreground: 210 15% 61%;
+
+  --accent: 47 100% 50% / 0.08;
+  --accent-foreground: 47 100% 50%;
+
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 240 20% 15%;
-  --input: 240 20% 15%;
-  --ring: 44 55% 54%;
 
-  --app-font-sans: 'Plus Jakarta Sans', sans-serif;
-  --app-font-heading: 'Rajdhani', sans-serif;
-  --app-font-serif: Georgia, serif;
-  --app-font-mono: Menlo, monospace;
-  --radius: 0.5rem;
+  --border: 222 30% 11%;
+  --input: 222 30% 11%;
+  --ring: 47 100% 50%;
 
-  --chart-1: 44 55% 54%;
+  /* Fonts — matching real site */
+  --app-font-sans: 'Work Sans', ui-sans-serif, system-ui, sans-serif;
+  --app-font-heading: 'Instrument Serif', 'Cormorant Garamond', ui-serif, Georgia, serif;
+  --app-font-serif: 'Instrument Serif', 'Cormorant Garamond', ui-serif, Georgia, serif;
+  --app-font-mono: 'SF Mono', 'Fira Code', Menlo, monospace;
+
+  /* Border radius: very square like real site (2px) */
+  --radius: 0.125rem;
+
+  --chart-1: 47 100% 50%;
   --chart-2: 218 100% 55%;
   --chart-3: 322 100% 50%;
-  --chart-4: 120 100% 70%;
+  --chart-4: 142 70% 50%;
   --chart-5: 280 100% 60%;
+
+  /* Elevations */
+  --elevate-1: rgba(255, 255, 255, 0.03);
+  --elevate-2: rgba(255, 255, 255, 0.07);
+  --button-outline: rgba(255, 255, 255, 0.08);
+  --badge-outline: rgba(255, 255, 255, 0.05);
+  --opaque-button-border-intensity: 8;
+
+  --sidebar-primary-border: hsl(var(--primary));
+  --sidebar-accent-border: hsl(var(--accent));
+  --primary-border: hsl(from hsl(var(--primary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --secondary-border: hsl(from hsl(var(--secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --muted-border: hsl(from hsl(var(--muted)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  /* Sidebar (same dark theme) */
+  --sidebar: 222 40% 5%;
+  --sidebar-foreground: 0 0% 97%;
+  --sidebar-border: 222 30% 11%;
+  --sidebar-primary: 47 100% 50%;
+  --sidebar-primary-foreground: 222 75% 2%;
+  --sidebar-accent: 222 30% 9%;
+  --sidebar-accent-foreground: 0 0% 97%;
+  --sidebar-ring: 47 100% 50%;
 }
 
 .dark {
-  --background: 240 20% 5%;
-  --foreground: 240 20% 96%;
-  --card: 240 20% 7%;
-  --card-foreground: 240 20% 96%;
-  --card-border: 44 55% 54% / 0.15;
-  --popover: 240 20% 7%;
-  --popover-foreground: 240 20% 96%;
-  --popover-border: 44 55% 54% / 0.15;
-  --primary: 44 55% 54%;
-  --primary-foreground: 240 20% 5%;
+  --background: 222 75% 2%;
+  --foreground: 0 0% 97%;
+  --card: 222 40% 5%;
+  --card-foreground: 0 0% 97%;
+  --card-border: 47 100% 50% / 0.12;
+  --popover: 222 40% 6%;
+  --popover-foreground: 0 0% 97%;
+  --popover-border: 47 100% 50% / 0.15;
+  --primary: 47 100% 50%;
+  --primary-foreground: 222 75% 2%;
   --secondary: 218 100% 55%;
   --secondary-foreground: 0 0% 100%;
-  --muted: 240 20% 12%;
-  --muted-foreground: 240 20% 65%;
-  --accent: 44 55% 54% / 0.1;
-  --accent-foreground: 44 55% 54%;
+  --muted: 222 30% 9%;
+  --muted-foreground: 210 15% 61%;
+  --accent: 47 100% 50% / 0.08;
+  --accent-foreground: 47 100% 50%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 240 20% 15%;
-  --input: 240 20% 15%;
-  --ring: 44 55% 54%;
+  --border: 222 30% 11%;
+  --input: 222 30% 11%;
+  --ring: 47 100% 50%;
 }
 
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
 
 @layer utilities {
+  /* Instrument Serif display class */
   .font-heading {
     font-family: var(--app-font-heading);
   }
-  
+
+  /* Glass card — matches editorial card style of the site */
   .glass-card {
-    background: rgba(18, 18, 23, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(201, 168, 76, 0.15);
+    background: rgba(6, 8, 18, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(253, 199, 0, 0.12);
   }
-  
+
+  /* Gold glow utilities — updated to FDC700 */
   .glow-gold {
-    box-shadow: 0 0 15px rgba(201, 168, 76, 0.2);
+    box-shadow: 0 0 18px rgba(253, 199, 0, 0.18);
   }
 
   .glow-gold-hover:hover {
-    box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
-    border-color: rgba(201, 168, 76, 0.4);
+    box-shadow: 0 0 24px rgba(253, 199, 0, 0.28);
+    border-color: rgba(253, 199, 0, 0.4) !important;
   }
 
   .text-glow-gold {
-    text-shadow: 0 0 10px rgba(201, 168, 76, 0.5);
+    text-shadow: 0 0 12px rgba(253, 199, 0, 0.45);
   }
 
+  /* Staked NFT border with FDC700 gold */
   .staked-border {
-    border: 1px solid rgba(201, 168, 76, 0.8);
-    box-shadow: inset 0 0 20px rgba(201, 168, 76, 0.1), 0 0 15px rgba(201, 168, 76, 0.3);
+    border: 1px solid rgba(253, 199, 0, 0.75);
+    box-shadow: inset 0 0 24px rgba(253, 199, 0, 0.08), 0 0 18px rgba(253, 199, 0, 0.25);
+  }
+
+  /* Subtle scan-line divider used in editorial layouts */
+  .section-rule {
+    border-top: 1px solid rgba(253, 199, 0, 0.12);
+  }
+
+  /* Italic serif for accent text — like the real site uses */
+  .text-accent-serif {
+    font-family: var(--app-font-heading);
+    font-style: italic;
+    color: hsl(47, 100%, 50%);
+  }
+
+  /* Ticker animation for reward numbers */
+  @keyframes tickUp {
+    0% { transform: translateY(4px); opacity: 0.7; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  .tick-animation {
+    animation: tickUp 0.2s ease-out;
   }
 }
